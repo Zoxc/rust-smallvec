@@ -629,25 +629,11 @@ impl<A: Array> SmallVec<A> {
         }
     }
 
-    /// Append an item to the vector.
-    #[inline]
-    pub fn push(&mut self, value: A::Item) {
-        unsafe {
-            let (_, &mut len, cap) = self.triple_mut();
-            if unlikely!(len == cap) {
-                self.reserve(1);
-            }
-            let (ptr, len_ptr, _) = self.triple_mut();
-            *len_ptr = len + 1;
-            ptr::write(ptr.offset(len as isize), value);
-        }
-    }
-
     /// Append an item to the vector. This is always inlined with a fast
     /// path for when the vector doesn't need an heap allocation.
     #[cfg(feature = "push_light")]
     #[inline(always)]
-    pub fn push_light(&mut self, value: A::Item) {
+    pub fn push(&mut self, value: A::Item) {
         unsafe {
             if likely!(self.capacity < A::size()) {
                 let ptr = self.data.inline_mut().ptr_mut();

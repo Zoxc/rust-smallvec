@@ -13,7 +13,7 @@ documentation = "https://doc.servo.org/smallvec/"
 [features]
 std = []
 union = []
-default = ["std"]
+default = ["std", "likely", "push_light"]
 specialization = []
 may_dangle = []
 likely = []
